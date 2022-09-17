@@ -16,9 +16,9 @@ def softmax(s):
     return exps/np.sum(exps, axis=1, keepdims=True)
 
 
+
 def sigmoid_derv(s):
     return s*(1-s)
-
 
 def cross_entropy(pred, real):
     n_samples = real.shape[0]
@@ -30,3 +30,22 @@ def loss(pred, real):
     logp = - np.log(pred[np.arange(n_samples), real.argmax(axis=1)])
     loss = np.sum(logp)/n_samples
     return loss
+
+
+class NeuralNetwork:
+    def __init__(self, x, y):
+        self.x = x
+        neurons = 128
+        self.lr = 0.5
+        input_dim = x.shape[1]
+        output_dim = y.shape[1]
+
+        self.w1 = np.random.randn(input_dim, neurons)
+        self.w2 = np.random.randn(neurons, neurons)
+        self.w3 = np.random.randn(neurons, output_dim)
+
+        self.b1 = np.zeros((1, neurons))
+        self.b2 = np.zeros((1, neurons))
+        self.b3 = np.zeros((1, output_dim))
+
+        self.y = y
