@@ -58,9 +58,9 @@ class NeuralNetwork:
         z3 = np.dot(self.a2, self.w3) + self.b3
         self.a3 = softmax(z3)
 
-    def backprop(self):
-        loss = loss(self.a3, self.y)
-        print('Error :', loss)
+    def backprop(self, x):
+        if (x%100==0):
+            print('Error:', loss(self.a3, self.y))
         a3_delta = cross_entropy(self.a3, self.y)
         z2_delta = np.dot(a3_delta, self.w3.T)
         a2_delta = z2_delta * sigmoid_derv(self.a2)
@@ -74,3 +74,29 @@ class NeuralNetwork:
         self.b2 -= self.lr * np.sum(a2_delta, axis=0)
         self.w1 -= self.lr * np.dot(self.x.T, a1_delta)
         self.b1 -= self.lr * np.sum(a1_delta, axis=0)
+
+    def predict(self, data):
+        self.x = data
+        self.feedforward()
+        return self.a3.argmax()
+
+
+print("Creating model...")
+model = NeuralNetwork(x_train/16.0, np.array(y_train))
+
+epochs = 1000
+print("Training model (epochs: " +str(epochs)+")")
+for x in range(epochs):
+    model.feedforward()
+    model.backprop(x)
+
+
+def get_acc(x, y):
+    acc = 0
+    for xx,yy in zip(x, y):
+        s = model.predict(xx)
+        if s == np.argmax(yy):
+            acc +=1
+    return acc/len(x)*100
+
+print("Model accuracy on test data: ", get_acc(x_test/16, np.array(y_test)))
