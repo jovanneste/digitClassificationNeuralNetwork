@@ -16,7 +16,6 @@ def softmax(s):
     return exps/np.sum(exps, axis=1, keepdims=True)
 
 
-
 def sigmoid_derv(s):
     return s*(1-s)
 
@@ -49,3 +48,12 @@ class NeuralNetwork:
         self.b3 = np.zeros((1, output_dim))
 
         self.y = y
+
+
+    def feedforward():
+        z1 = np.dot(self.x, self.w1) + self.b1
+        self.a1 = sigmoid(z1)
+        z2 = np.dot(self.a1, self.w2) + self.b2
+        self.a2 = sigmoid(z2)
+        z3 = np.dot(self.a2, self.w3) + self.b3
+        self.a3 = softmax(z3)
