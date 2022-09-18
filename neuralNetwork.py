@@ -50,7 +50,7 @@ class NeuralNetwork:
         self.y = y
 
 
-    def feedforward():
+    def feedforward(self):
         z1 = np.dot(self.x, self.w1) + self.b1
         self.a1 = sigmoid(z1)
         z2 = np.dot(self.a1, self.w2) + self.b2
